@@ -122,3 +122,45 @@ namespace YourNamespace
         }
     }
 }
+
+//design
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CrudOperations.aspx.cs" Inherits="YourNamespace.CrudOperations" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>CRUD Operations</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h1>CRUD Operations</h1>
+
+        <!-- Form for Insert Operation -->
+        <h2>Add New Record:</h2>
+        <div>
+            <asp:TextBox ID="txtName" runat="server" placeholder="Name"></asp:TextBox>
+            <asp:TextBox ID="txtEmail" runat="server" placeholder="Email"></asp:TextBox>
+            <asp:TextBox ID="txtPhoneNumber" runat="server" placeholder="Phone Number"></asp:TextBox>
+            <asp:Button ID="btnInsert" runat="server" Text="Insert" OnClick="btnInsert_Click" />
+        </div>
+
+        <!-- Display Data from Database -->
+        <h2>Existing Records:</h2>
+        <asp:GridView ID="gvData" runat="server" AutoGenerateColumns="False" DataKeyNames="ID">
+            <Columns>
+                <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" ReadOnly="True" />
+                <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name" />
+                <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
+                <asp:BoundField DataField="PhoneNumber" HeaderText="Phone Number" SortExpression="PhoneNumber" />
+                <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" />
+            </Columns>
+        </asp:GridView>
+
+        <!-- Edit and Delete Operations handled by GridView automatically -->
+
+    </form>
+</body>
+</html>
+
