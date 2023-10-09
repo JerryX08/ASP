@@ -1,0 +1,124 @@
+using System;
+using System.Data.SqlClient;
+
+namespace YourNamespace
+{
+    public class DatabaseConnection
+    {
+        // Connection string to your SQL Server database
+        private const string ConnectionString = "Data Source=YourServerName;Initial Catalog=YourDatabaseName;User ID=YourUsername;Password=YourPassword";
+
+        // Method to establish a connection and return SqlConnection object
+        public SqlConnection GetSqlConnection()
+        {
+            SqlConnection connection = new SqlConnection(ConnectionString);
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Connection Opened Successfully");
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            return connection;
+        }
+
+        // Example method to perform database operations
+        public void PerformDatabaseOperations()
+        {
+            using (SqlConnection connection = GetSqlConnection())
+            {
+                // Execute your database operations here
+                // For example, you can use SqlCommand, SqlDataAdapter, etc.
+                // SqlCommand command = new SqlCommand("SELECT * FROM YourTable", connection);
+                // SqlDataReader reader = command.ExecuteReader();
+                // ...
+            }
+        }
+    }
+}
+
+//CRUD 
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace YourNamespace
+{
+    public class CrudOperations
+    {
+        // Connection string to your SQL Server database
+        private const string ConnectionString = "Data Source=YourServerName;Initial Catalog=YourDatabaseName;User ID=YourUsername;Password=YourPassword";
+
+        // Method to insert data into the database
+        public void InsertData(string name, string email, string phoneNumber)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO YourTable (Name, Email, PhoneNumber) VALUES (@Name, @Email, @PhoneNumber)";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", name);
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // Method to retrieve data from the database
+        public DataTable GetData()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM YourTable";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(dataTable);
+                    }
+                }
+            }
+            return dataTable;
+        }
+
+        // Method to update data in the database
+        public void UpdateData(int id, string name, string email, string phoneNumber)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string query = "UPDATE YourTable SET Name = @Name, Email = @Email, PhoneNumber = @PhoneNumber WHERE ID = @ID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID", id);
+                    command.Parameters.AddWithValue("@Name", name);
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // Method to delete data from the database
+        public void DeleteData(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string query = "DELETE FROM YourTable WHERE ID = @ID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+}
